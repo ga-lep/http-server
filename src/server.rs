@@ -1,4 +1,8 @@
 use std::net::TcpListener;
+use std::io::Read;
+use crate::http::Request;
+
+const MESSAGE_SIZE: usize = 65535;
 
 pub struct Server {
     ip: String,
@@ -20,7 +24,16 @@ impl Server {
 
         loop {
              match listener.accept() {
-                Ok((tcpStreammm, socketAddr)) => println!("{}", socketAddr.ip()),
+                Ok((mut tcpStream, socketAddr)) => {
+                    let mut data = [0u8; MESSAGE_SIZE];
+
+                    tcpStream.read(&mut data);
+
+                    let request = Request::try_from(&data[..]);
+                    println!("{} {}",
+                             socketAddr.ip(),
+                             String::from_utf8_lossy(&data))
+                },
                 Err(error) => println!("Failed to established connection: {}", error)
             }
         }
