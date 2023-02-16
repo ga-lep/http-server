@@ -24,16 +24,16 @@ impl Server {
 
         loop {
              match listener.accept() {
-                Ok((mut tcpStream, socketAddr)) => {
+                Ok((mut tcp_stream, socket_addr)) => {
                     let mut data = [0u8; MESSAGE_SIZE];
 
-                    tcpStream.read(&mut data);
+                    tcp_stream.read(&mut data);
 
-                    let request = Request::try_from(&data[..]);
-                    println!("{} {}",
-                             socketAddr.ip(),
-                             String::from_utf8_lossy(&data))
-                },
+                    match Request::try_from(&data[..]) {
+                        Ok(request) => println!("{}", request),
+                        Err(e) => println!("{}", e),
+                    }
+                }
                 Err(error) => println!("Failed to established connection: {}", error)
             }
         }

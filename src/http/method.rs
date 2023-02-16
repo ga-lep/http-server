@@ -1,8 +1,8 @@
+use std::fmt::{Debug, Display, Formatter, Result as FormatterResult};
 use std::str::FromStr;
 use crate::http::parser_error::ParserError;
 
 #[derive(PartialEq)]
-#[derive(Debug)]
 pub enum Method {
     GET,
     HEAD,
@@ -31,6 +31,40 @@ impl FromStr for Method {
             "PATCH" => Ok(Method::PATCH),
             _ => Err(ParserError::InvalidMethod)
         }
+    }
+}
+
+impl Display for Method {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FormatterResult {
+        let method = match &self {
+            Method::GET => "GET",
+            Method::HEAD => "HEAD",
+            Method::POST => "POST",
+            Method::PUT => "PUT",
+            Method::DELETE => "DELETE",
+            Method::CONNECT => "CONNECT",
+            Method::OPTIONS => "OPTIONS",
+            Method::TRACE => "TRACE",
+            Method::PATCH => "PATCH",
+        };
+        write!(f, "{}", method)
+    }
+}
+
+impl Debug for Method {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FormatterResult {
+        let method = match &self {
+            Method::GET => "GET",
+            Method::HEAD => "HEAD",
+            Method::POST => "POST",
+            Method::PUT => "PUT",
+            Method::DELETE => "DELETE",
+            Method::CONNECT => "CONNECT",
+            Method::OPTIONS => "OPTIONS",
+            Method::TRACE => "TRACE",
+            Method::PATCH => "PATCH",
+        };
+        write!(f, "{}", method)
     }
 }
 
