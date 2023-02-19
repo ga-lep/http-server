@@ -1,6 +1,6 @@
 use std::fmt::{Debug, Display, Formatter, Result as FormatterResult};
 use std::str::FromStr;
-use crate::http::parser_error::ParserError;
+use super::ParserError;
 
 #[derive(PartialEq)]
 pub enum Method {
